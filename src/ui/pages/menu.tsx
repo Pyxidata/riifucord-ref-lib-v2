@@ -7,7 +7,6 @@ import TopBar from '../components/topbar';
 import BottomBar from '../components/bottombar';
 import defaultColor from '../colors.json';
 import spin from '../../assets/spin.gif';
-import menuBg from '../../assets/menuBg.png';
 
 interface Profile {
   id: string;
@@ -60,7 +59,7 @@ export const Menu: React.FC = () => {
 
   return (
     <div className="relative min-h-screen" style={{
-      backgroundImage: "url('https://raw.githubusercontent.com/Pyxidata/riifucord-ref-lib-v2/refs/heads/main/src/assets/menuBg.png')", // background image
+      backgroundImage: "url('https://raw.githubusercontent.com/Pyxidata/riifucord-ref-lib-v2/refs/heads/main/src/assets/menuBg.jpg')", // background image
       backgroundColor: defaultColor.bbg,  // default background color
       backgroundSize: 'cover', 
       backgroundPosition: 'center' ,
