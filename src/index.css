@@ -47,3 +47,8 @@ html {
     user-select: none;
     text-decoration: none;
 }
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}

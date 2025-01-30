@@ -103,7 +103,7 @@ const TopBar: React.FC<TopBarTheme> = ({
                           type="ID" 
                           placeholder="ID" 
                           className="border p-2 mb-2 w-full"
-                          style= {{ borderColor: secondary, color: "black" }} 
+                          style= {{ borderColor: secondary, color: primary }} 
                           value={id} 
                           onChange={(e) => setId(e.target.value)} 
                         />
@@ -111,7 +111,7 @@ const TopBar: React.FC<TopBarTheme> = ({
                           type="password" 
                           placeholder="Password" 
                           className="border p-2 mb-4 w-full" 
-                          style= {{ borderColor: secondary, color: "black" }} 
+                          style= {{ borderColor: secondary, color: primary }} 
                           value={password} 
                           onChange={(e) => setPassword(e.target.value)} 
                         />
