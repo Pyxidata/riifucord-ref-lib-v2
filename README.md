@@ -1,7 +1,7 @@
 # riifucord-ref-lib-v2
 
 <p align="center">
-  <img src="" alt="Icon" title="icon">
+  <img src="https://raw.githubusercontent.com/Pyxidata/riifucord-ref-lib-v2/refs/heads/main/src/assets/spin.gif" alt="Icon" title="icon">
 </p>
 
 <h1>
