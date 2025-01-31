@@ -1,5 +1,6 @@
-# Riifucord Reference Library v2
-<a href="https://pyxidata.github.io/riifucord-ref-lib-v2/" target="_blank" rel="noopener noreferrer">Link to Website</a>
+<h1>
+  Riifucord Reference Library v2
+</h1>
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Pyxidata/riifucord-ref-lib-v2/refs/heads/main/src/assets/spin.gif" alt="Icon" title="icon">
@@ -12,6 +13,10 @@
 <p>
   A website for sharing OC reference sheets, descriptions, stories, fanarts, etc.
 </p>
+
+<a href="https://pyxidata.github.io/riifucord-ref-lib-v2/" target="_blank" rel="noopener noreferrer">
+  Link to Website
+</a>
 
 <h1>
   Completeness: 🟡🟡🟡⚪⚪
