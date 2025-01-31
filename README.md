@@ -1,4 +1,5 @@
-# riifucord-ref-lib-v2
+# Riifucord Reference Library v2
+<a href="https://pyxidata.github.io/riifucord-ref-lib-v2/" target="_blank" rel="noopener noreferrer">Link to Website</a>
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Pyxidata/riifucord-ref-lib-v2/refs/heads/main/src/assets/spin.gif" alt="Icon" title="icon">
