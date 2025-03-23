@@ -175,7 +175,7 @@ export const Ref: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen" style={{ 
+    <div className="relative min-h-[100lvh]" style={{ 
       backgroundImage: `url(${artist?.bg})`, // background image
       backgroundColor: defaultColor.bbg,  // default background color
       backgroundSize: 'cover', 
@@ -194,7 +194,7 @@ export const Ref: React.FC = () => {
         userPfp={pfp}
       />
       <div className="container mx-auto flex justify-center items-center h-full">
-        <div className={`shadow-md p-4 w-full my-16 ${artist?.theme.width}`}
+        <div className={`shadow-md p-4 w-full my-16 ${artist?.theme.width} flex flex-col gap-4`}
           style={{ backgroundColor: artist?.theme.bg }}> 
           <div className="flex justify-between">
             {/* BACK BUTTON */}
@@ -224,11 +224,11 @@ export const Ref: React.FC = () => {
 
           {/* ARTIST PROFILE */}
           {artist && (artist?.pfp || artist?.name || artist?.desc || artist?.longDesc || isEditMode) && (
-            <div className="mt-4 px-4 pt-8" style={{ backgroundColor: artist?.theme.surface }}>
+            <div className="mt-4 p-4" style={{ backgroundColor: artist?.theme.surface }}>
               <div className="flex items-center">
                 <img
                   src={artist.pfp || pfp}
-                  className="w-20 h-20 rounded-full object-cover mr-8 ml-4 md:ml-12"
+                  className="w-20 h-20 rounded-full object-cover mr-8 ml-4 md:ml-12 my-4"
                 />
                 <div className="w-full truncate">
                   {isEditMode && <p className="text-xs text-teal-500 mb-1 w-full">Artist name</p>}
@@ -385,11 +385,9 @@ export const Ref: React.FC = () => {
 
             {/* OC ADD BUTTON */}
             {isEditMode && <>
-              <hr className="my-8" style={{ borderColor: artist?.theme?.secondary}}/>
-
               <p className="text-xs text-teal-500 mb-1 mt-4">OC - max. {Constants.max_oc}</p>
 
-              <button className="text-white font-bold px-2 mb-4 w-full" onClick={() => addOc()}
+              <button className="text-white font-bold px-2 w-full" onClick={() => addOc()}
                 style={{ backgroundColor: artist?.theme.primary, color: artist?.theme.surface }}>
                 Create New OC Page +
               </button>
@@ -400,16 +398,14 @@ export const Ref: React.FC = () => {
 
           {/* OC LIST */}
           {artist && (artist.oc || isEditMode) && (
-            <div className="flex flex-col"> 
+            <div className="flex flex-col gap-4"> 
               {artist.oc && Object.entries(artist.oc).sort((a, b) => a[1].sortingTag.localeCompare(b[1].sortingTag)).map(([ocId, oc]) => (
 
                 // OC CARD
                 <div key={ocId} className="shadow-md px-4" style={{ backgroundColor: artist?.theme.surface }}>
-
-                  <hr className="my-8" style={{ borderColor: artist?.theme?.secondary}}/>
                   
                   {isEditMode && <div className="flex items-top justify-between mt-4">
-                    <div className="flex-col w-1/4">
+                    <div className="flex flex-col w-32">
                       <SortingTagTipLabel text="Tag"/>
 
                       <input className="bg-transparent pl-1 focus:outline-none border border-teal-500 mb-4"
@@ -421,16 +417,16 @@ export const Ref: React.FC = () => {
                               sortingTag: e.target.value}}})}} />
                     </div>
                               
-                    <div className="flex w-4/4 gap-4">
-                      <button className="text-white font-bold px-2 h-6 mb-4"  onClick={() => {setShowOcDeleteBtn(!showOcDeleteBtn)}}
-                        style={{ backgroundColor: artist?.theme.primary, color: artist?.theme.surface }}>
-                        {showOcDeleteBtn ? "Cancel" : "Show Delete Button"}
-                      </button>
-
+                    <div className="flex gap-4">
                       {showOcDeleteBtn && <button className="text-white font-bold px-2 h-6 mb-4" onClick={() => {setShowOcDeleteBtn(false); remove(ref(database, `profiles/${uid}/oc/${ocId}`))}}
                         style={{ backgroundColor: artist?.theme.primary, color: artist?.theme.surface }}>
                         Delete
                       </button>}
+
+                      <button className="text-white font-bold px-2 h-6 mb-4"  onClick={() => {setShowOcDeleteBtn(!showOcDeleteBtn)}}
+                        style={{ backgroundColor: artist?.theme.primary, color: artist?.theme.surface }}>
+                        {showOcDeleteBtn ? "Cancel" : "Delete"}
+                      </button>
                     </div>
                   </div>}
 
@@ -605,15 +601,15 @@ export const Ref: React.FC = () => {
                     </>
                   )}
                   {oc.gallery && (
-                    <div>
+                    <div className="mb-4">
                       {!isEditMode && <h4 className="text-lg font-semibold mb-2">Character Art Gallery</h4>}
                       <div
                         className={
                           isEditMode
-                            ? "flex-col space-y-4"
+                            ? "flex flex-col gap-8"
                             : Object.keys(oc.gallery).length > 3
-                            ? "flex flex-wrap gap-4 justify-between max-h-[950px] overflow-y-auto"
-                            : "flex flex-wrap gap-4 justify-between"
+                            ? "flex flex-wrap gap-4 justify-start max-h-[400px] md:max-h-[930px] overflow-y-auto"
+                            : "flex flex-wrap gap-4 justify-start"
                         }
                       >
                         {Object.entries(oc.gallery)
@@ -640,7 +636,7 @@ export const Ref: React.FC = () => {
                                     </div>
                                   </div>
 
-                                  <div className="flex items-center mb-8 gap-2 w-full">
+                                  <div className="flex items-center gap-2 w-full">
                                     <input
                                       className="w-1/6 bg-transparent pl-1 focus:outline-none border border-teal-500"
                                       onBlur={() => updateDb()}
@@ -744,7 +740,7 @@ export const Ref: React.FC = () => {
                                 </>
                               ) : (
                                 <a href={gallery.img} target="_blank" rel="noopener noreferrer">
-                                  <img src={gallery.img} className="w-auto h-[300px] object-cover " />
+                                  <img src={gallery.img} className="w-auto h-[125px] md:h-[300px] object-cover " />
                                   <span className="absolute bottom-0 left-0 bg-gray-800 text-white text-xs px-2 py-1 bg-opacity-75 w-full">
                                     {gallery.desc && <p className="truncate">{gallery.desc}</p>}
                                     <p className="truncate">By {gallery.credit ? gallery.credit : "unknown"}</p>
