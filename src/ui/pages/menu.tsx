@@ -66,7 +66,7 @@ export const Menu: React.FC = () => {
   }, [searchTerm, profiles]);
 
   return (
-    <div className="relative min-h-screen" style={{
+    <div className="relative min-h-[100lvh]" style={{
       backgroundImage: "url('https://raw.githubusercontent.com/Pyxidata/riifucord-ref-lib-v2/refs/heads/main/src/assets/menuBg.jpg')", // background image
       backgroundColor: defaultColor.bbg,  // default background color
       backgroundSize: 'cover', 
@@ -84,52 +84,54 @@ export const Menu: React.FC = () => {
         userPfp={profiles.find(artist => artist.id === currentUser?.uid)?.pfp}
       />
 
-      <div className="container mx-auto flex justify-center items-center w-full h-full">
-        <div className="py-16">
-          <div className={"shadow-md p-4 max-w-screen-md"} style={{ backgroundColor: defaultColor.bg }}>
+      <div className="container mx-auto flex justify-center items-center w-full h-full my-16">
+        <div className="shadow-md p-4 max-w-screen-md w-full" style={{ backgroundColor: defaultColor.bg }}>
 
-            {/* TITLE */}
-            <div className="px-4 py-4 gap-4 text-center" style={{ backgroundColor: defaultColor.surface }}>
-              <div className="mb-8 space-y-4 mx-8 my-8 flex flex-col items-center">
-                <img src={isDed ? ded : spin} className="w-48 h-48" onClick={() => { setIsDed(true); if(!isDed)audioRef.current.play(); }}/>
-                <h1 className="text-4xl">Riifucord Reference Library v2</h1>
-                <p style={{ color: defaultColor.secondary }}>Editable OC reference sheets, descriptions, and galleries for cafe art sheeps!</p>
-              </div>
+          {/* TITLE */}
+          <div className="px-4 py-4 gap-4 text-center" style={{ backgroundColor: defaultColor.surface }}>
+            <div className="mb-8 space-y-4 my-8 flex flex-col items-center">
+              <img src={isDed ? ded : spin} className="w-48 h-48" onClick={() => { setIsDed(true); if(!isDed)audioRef.current.play(); }}/>
+              <h1 className="text-2xl md:text-4xl">Riifucord Reference Library v2</h1>
+              <p className="text-sm md:text-lg" style={{ color: defaultColor.secondary }}>Editable OC reference sheets, descriptions, and galleries for cafe art sheeps!</p>
+              {!currentUser && <p className="text-xs md:text-md" style={{ color: defaultColor.highlight }}>Ask kevin if you want your own account to create and edit your OC page!</p>}
             </div>
+          </div>
 
-            {/* PROFILES */}
-            <div className="mt-4 px-4 py-4" style={{ backgroundColor: defaultColor.surface }}>
-              <div className="overflow-y-auto">
+          {/* PROFILES */}
+          <div className="mt-4 px-4 py-4" style={{ backgroundColor: defaultColor.surface }}>
+            <div className="overflow-y-auto">
 
-                <h2 className="text-2xl font-semibold mb-4">Art Sheep List</h2>
+              <h2 className="text-2xl font-semibold mb-4">Art Sheep List</h2>
 
-                {/* Search Bar */}
-                <div className="mb-4">
-                  <input
-                    type="text"
-                    placeholder="Filter by name..."
-                    className="w-full border pl-3 py-2 focus:outline-none bg-transparent"
-                    style={{ borderColor: defaultColor.primary }}
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
+              {/* Search Bar */}
+              <div className="mb-4">
+                <input
+                  type="text"
+                  placeholder="Filter by name..."
+                  className="w-full border pl-3 py-2 focus:outline-none bg-transparent"
+                  style={{ borderColor: defaultColor.primary }}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
 
-                <hr style={{ borderColor: defaultColor.secondary}}/>
+              <hr style={{ borderColor: defaultColor.secondary}}/>
 
-                {/* PROFILE LIST */}
-                <ul className="space-y-4 mt-4 mx-4">
-                  {filteredProfiles.sort((a, b) => a.name.localeCompare(b.name)).map((profile) => ( // Use filteredProfiles here
-                    <li key={profile.id}>
-                      <Link to={{ pathname: "/ref/", search: `?uid=${profile.id}`, }}>
-                      
-                        <div className="flex items-center space-x-4">
-                          <img src={profile.pfp} className="w-12 h-12 rounded-full" alt={profile.name} />
-                          <span>{profile.name}</span>
-                        </div>
-                      </Link>
-                    </li>
-                  ))}
+              {/* PROFILE LIST */}
+              <div className="h-[300px] overflow-y-auto mx-4 mt-4">
+                <ul className="space-y-4">
+                  {filteredProfiles
+                    .sort((a, b) => a.name.localeCompare(b.name))
+                    .map((profile) => (
+                      <li key={profile.id}>
+                        <Link to={{ pathname: "/ref/", search: `?uid=${profile.id}` }}>
+                          <div className="flex items-center space-x-4 overflow-hidden">
+                            <img src={profile.pfp} className="w-12 h-12 rounded-full" alt={profile.name} />
+                            <p className="line-clamp-1">{profile.name}</p>
+                          </div>
+                        </Link>
+                      </li>
+                    ))}
                 </ul>
               </div>
             </div>
