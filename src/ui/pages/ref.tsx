@@ -175,7 +175,7 @@ export const Ref: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-[100lvh]" style={{ 
+    <div className="relative h-lvh" style={{ 
       backgroundImage: `url(${artist?.bg})`, // background image
       backgroundColor: defaultColor.bbg,  // default background color
       backgroundSize: 'cover', 

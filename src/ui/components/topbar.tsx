@@ -65,7 +65,7 @@ const TopBar: React.FC<TopBarTheme> = ({
           {/* WEBSITE LOGO AND NAME */}
           <div className="flex items-center cursor-pointer" onClick={() => navigate('//')}>
             <img src={logo} alt="Logo" className="w-10 h-10 md:w-12 md:h-12 mr-4 rounded-full cursor-pointer" /> 
-            <h1 className="text-sm md:text-xl">Riifucord Reference Library v2</h1> 
+            <h1 className="text-xs sm:text-sm md:text-xl">Riifucord Reference Library v2</h1> 
           </div>
 
           {/* LOGGED IN USER PROFILE SECTION */}
