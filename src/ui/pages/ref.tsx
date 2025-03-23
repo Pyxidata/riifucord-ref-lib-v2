@@ -771,7 +771,9 @@ export const Ref: React.FC = () => {
         <br/>
         <br/>
         <p className="font-bold">Step 1 - Upload image to Imgur</p>
-        Visit <a href="https://imgur.com/upload" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: artist?.theme.highlight }}>imgur.com</a> {"(no login required)"} and drag in any image into any part of the website screen.
+        Visit <a href="https://imgur.com/upload" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: artist?.theme.highlight }}>imgur.com</a> and drag in any image into any part of the website screen.
+        <br/>
+        Login is not required, but it is recommended since Imgur might one day delete all images not linked to an account.
         <img
           src={imgTipA}
           className="my-2"/>
