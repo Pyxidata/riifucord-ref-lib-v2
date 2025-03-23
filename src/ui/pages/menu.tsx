@@ -66,7 +66,7 @@ export const Menu: React.FC = () => {
   }, [searchTerm, profiles]);
 
   return (
-    <div className="relative h-lvh" style={{
+    <div className="relative h-min-lvh" style={{
       backgroundImage: "url('https://raw.githubusercontent.com/Pyxidata/riifucord-ref-lib-v2/refs/heads/main/src/assets/menuBg.jpg')", // background image
       backgroundColor: defaultColor.bbg,  // default background color
       backgroundSize: 'cover', 
