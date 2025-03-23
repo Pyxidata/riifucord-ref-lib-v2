@@ -12,7 +12,7 @@ createRoot(document.getElementById("root")!).render(
         <Provider>
             <Routes>
                 <Route index path="/" element={<Menu />}/>
-                <Route path="/ref/:uid" element={<Ref />} /> 
+                <Route path="/ref/" element={<Ref />} /> 
             </Routes>
         </Provider>
     </BrowserRouter>

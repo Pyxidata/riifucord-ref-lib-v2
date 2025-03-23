@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { database } from '../../firebase-config';
 import { ref, onValue } from 'firebase/database'; 
+import { useAuth } from '../../context/authContext.tsx';
 import pfp from '../../assets/pfp.png';
 import TopBar from '../components/topbar';
 import BottomBar from '../components/bottombar';
 import defaultColor from '../colors.json';
 import spin from '../../assets/spin.gif';
+import ded from '../../assets/ded.png';
+import ohufgh from '../../assets/ohufgh.mp3';
 
 interface Profile {
   id: string;
@@ -18,6 +21,9 @@ export const Menu: React.FC = () => {
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredProfiles, setFilteredProfiles] = useState<Profile[]>(profiles);
+  const [isDed, setIsDed] = useState(false);
+  const audioRef = useRef(new Audio(ohufgh));
+  const { currentUser } = useAuth(); 
 
   useEffect(() => {
     const profilesRef = ref(database, 'profiles');
@@ -35,6 +41,8 @@ export const Menu: React.FC = () => {
         setProfiles([]);
       }
     });
+
+    audioRef.current.preload = 'auto'; // Or 'metadata'
 
     return () => unsubscribe(); 
   }, []);
@@ -73,6 +81,7 @@ export const Menu: React.FC = () => {
         primary={undefined}
         secondary={undefined}
         highlight={undefined}
+        userPfp={profiles.find(artist => artist.id === currentUser?.uid)?.pfp}
       />
 
       <div className="container mx-auto flex justify-center items-center w-full h-full">
@@ -82,7 +91,7 @@ export const Menu: React.FC = () => {
             {/* TITLE */}
             <div className="px-4 py-4 gap-4 text-center" style={{ backgroundColor: defaultColor.surface }}>
               <div className="mb-8 space-y-4 mx-8 my-8 flex flex-col items-center">
-                <img src={spin} className="w-48 h-48"/>
+                <img src={isDed ? ded : spin} className="w-48 h-48" onClick={() => { setIsDed(true); if(!isDed)audioRef.current.play(); }}/>
                 <h1 className="text-4xl">Riifucord Reference Library v2</h1>
                 <p style={{ color: defaultColor.secondary }}>Editable OC reference sheets, descriptions, and galleries for cafe art sheeps!</p>
               </div>
@@ -106,13 +115,14 @@ export const Menu: React.FC = () => {
                   />
                 </div>
 
-                <hr style={{ color: defaultColor.primary}}/>
+                <hr style={{ borderColor: defaultColor.secondary}}/>
 
                 {/* PROFILE LIST */}
                 <ul className="space-y-4 mt-4 mx-4">
                   {filteredProfiles.sort((a, b) => a.name.localeCompare(b.name)).map((profile) => ( // Use filteredProfiles here
                     <li key={profile.id}>
-                      <Link to={`/ref/${profile.id}`}>
+                      <Link to={{ pathname: "/ref/", search: `?uid=${profile.id}`, }}>
+                      
                         <div className="flex items-center space-x-4">
                           <img src={profile.pfp} className="w-12 h-12 rounded-full" alt={profile.name} />
                           <span>{profile.name}</span>

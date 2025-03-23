@@ -19,10 +19,9 @@ const BottomBar: React.FC<BottomBarTheme> = ({
         <div>
           <p className="text-xs">
             This website was made by kevin.
-            </p> 
-          <p className="text-xs text-center">
+            <br/>
             Contact me if you want an account to edit your page or create your own page.
-            </p> 
+          </p>
 
         </div>
       </div>

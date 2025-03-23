@@ -12,6 +12,7 @@ interface TopBarTheme {
   primary: string | undefined;
   secondary: string | undefined;
   highlight: string | undefined;
+  userPfp: string | undefined;
 }
 
 const TopBar: React.FC<TopBarTheme> = ({
@@ -20,6 +21,7 @@ const TopBar: React.FC<TopBarTheme> = ({
   primary = defaultColor.primary,
   secondary = defaultColor.secondary,
   highlight = defaultColor.highlight,
+  userPfp = pfp
 }) => {
   const { currentUser, login, logout } = useAuth(); 
   const navigate = useNavigate();
@@ -55,24 +57,24 @@ const TopBar: React.FC<TopBarTheme> = ({
 
   return (
     <>
-      <div className="fixed top-0 left-0 w-full z-50 shadow-md"
+      <div className="fixed top-0 left-0 w-full z-50 shadow-md px-8 h-16"
         style={{ backgroundColor: surface, color: primary }}
       > 
         <div className="container mx-auto flex justify-between items-center py-2">
 
           {/* WEBSITE LOGO AND NAME */}
-          <div className="flex items-center cursor-pointer" onClick={() => navigate('/')}>
-            <img src={logo} alt="Logo" className="w-12 h-12 mr-4 rounded-full cursor-pointer" /> 
-            <h1 className="text-xl">Riifucord Reference Library v2</h1> 
+          <div className="flex items-center cursor-pointer" onClick={() => navigate('//')}>
+            <img src={logo} alt="Logo" className="w-10 h-10 md:w-12 md:h-12 mr-4 rounded-full cursor-pointer" /> 
+            <h1 className="text-sm md:text-xl">Riifucord Reference Library v2</h1> 
           </div>
 
           {/* LOGGED IN USER PROFILE SECTION */}
-          <div className="flex items-center">
+          <div className="flex items-center ml-8">
             {currentUser ? (
               <>
                 <img 
-                  src={currentUser.photoURL || pfp }  
-                  className="w-8 h-8 rounded-full object-cover" 
+                  src={userPfp}  
+                  className="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover" 
                 />
 
                 {/* LOGOUT BUTTON */}
@@ -85,7 +87,7 @@ const TopBar: React.FC<TopBarTheme> = ({
               <>
 
                 {/* LOGIN BUTTON */}
-                <button className="py-2 px-4" onClick={toggleLoginForm}>
+                <button className="py-2 pl-4" onClick={toggleLoginForm}>
                   <div className="flex items-center gap-4">
                     <p>Login</p>
                     <AiOutlineLogin className="text-lg" size={32} />
@@ -96,7 +98,7 @@ const TopBar: React.FC<TopBarTheme> = ({
                 {isLoginFormVisible && (
                   <>
                     <div className="absolute w-screen h-screen left-0 top-0 bg-black/50" onClick={toggleLoginForm}/>
-                    <div className="absolute right-4 top-24 p-4 shadow-md border" style={{ backgroundColor: surface }}> 
+                    <div className="absolute right-4 ml-4 top-20 p-4 shadow-md border" style={{ backgroundColor: surface }}> 
                       <form onSubmit={handleLoginSubmit}> 
                         {error && <p className="mb-2" style={{ color: highlight }}>{error}</p>} 
                         <input 
