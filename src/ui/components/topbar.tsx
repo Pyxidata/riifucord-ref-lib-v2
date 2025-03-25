@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
 import logo from '../../assets/logo.gif';
 import defaultColor from '../colors.json';
 import pfp from '../../assets/pfp.png';
+import { database } from '../../firebase-config';
 import { AiOutlineLogin, AiOutlineLogout } from 'react-icons/ai';
+import { DataSnapshot, onValue, ref } from 'firebase/database';
+import { Artist } from '../objects/artist';
 
 interface TopBarTheme {
   bg: string | undefined;
@@ -12,7 +15,6 @@ interface TopBarTheme {
   primary: string | undefined;
   secondary: string | undefined;
   highlight: string | undefined;
-  userPfp: string | undefined;
 }
 
 const TopBar: React.FC<TopBarTheme> = ({
@@ -21,14 +23,40 @@ const TopBar: React.FC<TopBarTheme> = ({
   primary = defaultColor.primary,
   secondary = defaultColor.secondary,
   highlight = defaultColor.highlight,
-  userPfp = pfp
 }) => {
+
   const { currentUser, login, logout } = useAuth(); 
   const navigate = useNavigate();
   const [isLoginFormVisible, setIsLoginFormVisible] = useState(false);
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [currentUserPfp, setCurrentUserPfp] = useState<string>(pfp);
+  
+    useEffect(() => {
+      if (!database || !currentUser) {
+        setCurrentUserPfp(pfp);
+        return;
+      }
+  
+      const artistRef = ref(database, `profiles/${currentUser.uid}`);
+  
+      const unsubscribe = onValue(artistRef, (snapshot: DataSnapshot) => {
+        if (snapshot.exists()) {
+          const artistData: Artist = snapshot.val() as Artist;
+  
+          if (artistData && artistData.pfp) {
+            setCurrentUserPfp(artistData.pfp);
+          } else {
+            setCurrentUserPfp(pfp);
+          }
+        } else {
+          setCurrentUserPfp(pfp);
+        }
+      });
+  
+      return () => unsubscribe();
+    }, [database, currentUser, pfp]);
 
   const handleLogout = async () => {
     try {
@@ -48,10 +76,10 @@ const TopBar: React.FC<TopBarTheme> = ({
     event.preventDefault(); 
 
     try {
-      await login(id + "@riifuRefLib.com", password);
+      await login(id.trim() + "@riifuRefLib.com", password);
       setIsLoginFormVisible(false);
     } catch (error) {
-      setError("Wrong email and/or password");
+      setError("Wrong username and/or password");
     }
   };
 
@@ -64,7 +92,7 @@ const TopBar: React.FC<TopBarTheme> = ({
 
           {/* WEBSITE LOGO AND NAME */}
           <div className="flex items-center cursor-pointer" onClick={() => navigate('//')}>
-            <img src={logo} alt="Logo" className="w-10 h-10 md:w-12 md:h-12 mr-4 rounded-full cursor-pointer" /> 
+            <img src={logo} alt="Logo" className="w-8 h-8 md:w-10 md:h-10 mr-4 rounded-full cursor-pointer" /> 
             <h1 className="text-xs sm:text-sm md:text-xl">Riifucord Reference Library v2</h1> 
           </div>
 
@@ -73,8 +101,8 @@ const TopBar: React.FC<TopBarTheme> = ({
             {currentUser ? (
               <>
                 <img 
-                  src={userPfp}  
-                  className="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover" 
+                  src={currentUserPfp}  
+                  className="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover shrink-0" 
                 />
 
                 {/* LOGOUT BUTTON */}

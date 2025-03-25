@@ -81,7 +81,6 @@ export const Menu: React.FC = () => {
         primary={undefined}
         secondary={undefined}
         highlight={undefined}
-        userPfp={profiles.find(artist => artist.id === currentUser?.uid)?.pfp}
       />
 
       <div className="container mx-auto flex justify-center items-center w-full h-full my-16">
@@ -124,9 +123,9 @@ export const Menu: React.FC = () => {
                     .sort((a, b) => a.name.localeCompare(b.name))
                     .map((profile) => (
                       <li key={profile.id}>
-                        <Link to={{ pathname: "/ref/", search: `?uid=${profile.id}` }}>
+                        <Link to={{ pathname: "/ref", search: `?uid=${profile.id}` }}>
                           <div className="flex items-center space-x-4 overflow-hidden">
-                            <img src={profile.pfp} className="w-12 h-12 rounded-full" alt={profile.name} />
+                            <img src={profile.pfp} className="w-12 h-12 rounded-full object-cover" alt={profile.name} />
                             <p className="line-clamp-1">{profile.name}</p>
                           </div>
                         </Link>

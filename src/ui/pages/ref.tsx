@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { database } from '../../firebase-config';
-import { ref, onValue, update, push, remove } from 'firebase/database';
+import { ref, onValue, update, push, remove, DataSnapshot } from 'firebase/database';
 import { useAuth } from '../../context/authContext.tsx';
 import pfp from '../../assets/pfp.png';
 import imgTipA from '../../assets/imageTipA.png';
@@ -89,7 +89,7 @@ export const Ref: React.FC = () => {
         } = {
           sortingTag: `-${1000000000000000 - Date.now()}`,
           name: "New OC",
-          ref: "https://picsum.photos/1200/900",
+          ref: "",
         };
         update(newOcRef, newOc);
       }
@@ -190,8 +190,6 @@ export const Ref: React.FC = () => {
         primary={artist?.theme.primary}
         secondary={artist?.theme.secondary}
         highlight={artist?.theme.highlight}
-        //userPfp={profiles.find(artist => artist.id === currentUser.uid)?.pfp}
-        userPfp={pfp}
       />
       <div className="container mx-auto flex justify-center items-center h-full">
         <div className={`shadow-md p-4 w-full my-16 ${artist?.theme.width} flex flex-col gap-4`}
@@ -228,19 +226,23 @@ export const Ref: React.FC = () => {
               <div className="flex items-center">
                 <img
                   src={artist.pfp || pfp}
-                  className="w-20 h-20 rounded-full object-cover mr-8 ml-4 md:ml-12 my-4"
+                  className="w-20 h-20 rounded-full object-cover mr-8 ml-4 my-4 shrink-0"
                 />
                 <div className="w-full truncate">
                   {isEditMode && <p className="text-xs text-teal-500 mb-1 w-full">Artist name</p>}
                   <h1 className="text-lg font-bold w-full">
-                    {isEditMode ? <input className="bg-transparent pl-1 focus:outline-none border border-teal-500 w-full" 
+                    {isEditMode ? <input className="bg-transparent pl-1 focus:outline-none border border-teal-500 w-full mb-4" 
                       onBlur={() => updateDb()}
                       value={newArtist?.name || ""} 
                       onChange={(e) => {setNewArtist({ ...artist, name: e.target.value})}}
-                    /> : artist.name}
+                    /> : 
+                    <div className="w-full flex items-end gap-1">
+                      {artist.name}
+                      <p className="text-xs mb-1" style={{ color: artist?.theme.highlight }}>(artist)</p>
+                    </div>}
                   </h1>
 
-                  {isEditMode && <p className="text-xs text-teal-500 mb-1 mt-2 w-full">Brief description</p>}
+                  {isEditMode && <p className="text-xs text-teal-500 mb-1 w-full">Brief description</p>}
                   <div className="text-sm w-full" style={{ color: artist?.theme.secondary }}>
                     {isEditMode ? <input className="bg-transparent pl-1 focus:outline-none border border-teal-500 w-full mb-4" 
                       onBlur={() => updateDb()}
@@ -433,44 +435,74 @@ export const Ref: React.FC = () => {
                   {/* OC PROFILE */}
                   <div className="my-4 w-full">
                     <div className="flex items-center gap-8 mb-4 w-full"> 
-                      {oc.pfp && (
+                      {/* {oc.pfp && (
                         <a href={oc.pfp} target="_blank" rel="noopener noreferrer"> 
                           <img src={oc.pfp || pfp} className="w-32 aspect-square object-cover w-full h-full"/> 
                         </a>
-                      )}
+                      )} */}
 
-                      <div className="w-full"> 
+                      <div className="w-full">
                         {isEditMode && <p className="text-xs text-teal-500 mb-1 w-full">Character name</p>}
-                        
-                        <h3 className="text-2xl font-semibold mb-2 w-full truncate">
-                          {isEditMode ? <input className="bg-transparent pl-1 focus:outline-none border border-teal-500 w-full" 
-                            onBlur={() => updateDb()}
-                            value={newArtist?.oc[ocId].name || ""} 
-                            onChange={(e) => {setNewArtist({ 
-                              ...artist, oc: { 
-                                ...artist.oc, [ocId]: {
-                                  ...artist.oc[ocId], 
-                                  name: e.target.value}}})}}
-                          /> : oc.name}
-                        </h3> 
-
+                        <h3 className="text-2xl font-bold mb-2 w-full truncate flex items-center">
+                          {isEditMode ? (
+                            <div className="flex flex-col w-full">
+                              <input
+                                className="bg-transparent pl-1 border border-teal-500 w-full mb-2 focus:outline-none"
+                                onBlur={() => updateDb()}
+                                value={newArtist?.oc[ocId].name || ""}
+                                onChange={(e) =>
+                                  setNewArtist({
+                                    ...artist,
+                                    oc: { ...artist.oc, [ocId]: { ...artist.oc[ocId], name: e.target.value } },
+                                  })
+                                }
+                              />
+                              <label className="flex items-center text-xs mb-2 w-16">
+                                <input
+                                  type="checkbox"
+                                  className="h-4 w-4 text-teal-500"
+                                  onBlur={() => updateDb()}
+                                  checked={newArtist?.oc[ocId].isSona || false}
+                                  onChange={(e) => {
+                                    setNewArtist({
+                                      ...artist,
+                                      oc: { ...artist.oc, [ocId]: { ...artist.oc[ocId], isSona: e.target.checked } },
+                                    });
+                                  }}
+                                />
+                                <p className="text-ms ml-1 text-teal-500">Sona</p>
+                              </label>
+                            </div>
+                          ) : (
+                            <div className="flex items-end">
+                              {oc.name}
+                              {oc.isSona && <p className="ml-1 text-sm mb-1" style={{ color: artist?.theme.highlight }}>{"(Sona)"}</p>}
+                            </div>
+                          )}
+                        </h3>
                         {isEditMode && <p className="text-xs text-teal-500 mb-1 w-full">Brief description</p>}
-
                         <div style={{ color: artist?.theme.secondary }} className="truncate">
-                          {isEditMode ? <input className="bg-transparent pl-1 focus:outline-none border border-teal-500 w-full" 
-                            onBlur={() => updateDb()}
-                            value={newArtist?.oc[ocId].desc || ""} 
-                            onChange={(e) => {setNewArtist({ 
-                              ...artist, oc: { ...artist.oc, [ocId]: {
-                                ...artist.oc[ocId], 
-                                desc: e.target.value}}})}}
-                          /> : oc.desc}
+                          {isEditMode ? (
+                            <input
+                              className="bg-transparent pl-1 border border-teal-500 w-full focus:outline-none"
+                              onBlur={() => updateDb()}
+                              value={newArtist?.oc[ocId].desc || ""}
+                              onChange={(e) =>
+                                setNewArtist({
+                                  ...artist,
+                                  oc: { ...artist.oc, [ocId]: { ...artist.oc[ocId], desc: e.target.value } },
+                                })
+                              }
+                            />
+                          ) : (
+                            oc.desc
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {isEditMode && <>
+                  {/* {isEditMode && <>
                     <ImageUrlTipLabel text="Character profile picture URL"/>
 
                     <input className="bg-transparent pl-1 focus:outline-none border border-teal-500 w-full mb-8"
@@ -480,7 +512,7 @@ export const Ref: React.FC = () => {
                           ...artist, oc: { ...artist.oc, [ocId]: {
                             ...artist.oc[ocId], 
                             pfp: e.target.value}}})}} />
-                  </>}
+                  </>} */}
 
                   {(oc.longDesc || isEditMode) && <div className="mb-4 truncate">
                     {isEditMode && <p className="text-xs text-teal-500 mb-1">Detailed description text</p>}
@@ -492,11 +524,11 @@ export const Ref: React.FC = () => {
                           ...artist.oc, [ocId]: {
                             ...artist.oc[ocId], 
                             longDesc: e.target.value}}})}}
-                    /> : renderWithLineBreaks(oc.longDesc || "")}
+                    /> : <p className="mb-4">{renderWithLineBreaks(oc.longDesc || "")}</p>}
                   </div>}
 
                   {/* OC LINKS */}
-                  {isEditMode && <div className="ml-4 w-full">
+                  {isEditMode && <div className="w-full">
                     
                     <p className="text-xs text-teal-500 mb-1">Hyperlink URLs - max. {Constants.max_links}</p>
 
@@ -514,7 +546,7 @@ export const Ref: React.FC = () => {
                   </div>}
 
                   {(oc.links) && Object.entries(oc.links).sort((a, b) => a[1].sortingTag.localeCompare(b[1].sortingTag)).map(([linkId, link]) => (
-                    <div className="flex flex-col ml-4 text-md" key={linkId}>
+                    <div className="flex flex-col text-md" key={linkId}>
                       {isEditMode ? 
                         <div className="flex items-center gap-2 w-full mb-2">
 

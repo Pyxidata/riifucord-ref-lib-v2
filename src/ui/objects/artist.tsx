@@ -19,6 +19,7 @@ export interface Artist {
             name: string;
             desc?: string;
             longDesc?: string;
+            isSona?: boolean;
             links: {
                 [id: string]: {
                     sortingTag: string;
