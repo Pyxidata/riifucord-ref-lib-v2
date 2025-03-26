@@ -2,19 +2,18 @@
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { Provider } from "./ui/provider.tsx";
-import { BrowserRouter, Route, Routes } from "react-router";
+import { HashRouter, Route, Routes } from "react-router-dom";
 
 import { Menu } from './ui/pages/menu.tsx';
 import { Ref } from './ui/pages/ref.tsx';
-import TopBar from "./ui/components/topbar.tsx";
 
 createRoot(document.getElementById("root")!).render(
-    <BrowserRouter basename="/riifucord-ref-lib-v2">
+    <HashRouter>
         <Provider>
             <Routes>
-                <Route index path="/" element={<Menu />}/>
-                <Route path="/ref" element={<Ref />} /> 
+                <Route index element={<Menu />} />
+                <Route path="ref" element={<Ref />} />
             </Routes>
         </Provider>
-    </BrowserRouter>
+    </HashRouter>
 );

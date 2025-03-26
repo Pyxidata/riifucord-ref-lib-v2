@@ -17,6 +17,7 @@ import { renderWithLineBreaks } from '../util/functions.tsx';
 import Constants from '../constants.json';
 import { RgbaStringColorPicker } from 'react-colorful';
 import Dialog from '../components/dialog.tsx';
+import Cloner from '../components/cloner.tsx';
 
 enum DialogState {
   Closed,
@@ -29,7 +30,7 @@ interface Label {
 }
 
 export const Ref: React.FC = () => {
-  const uid = new URLSearchParams(location.search).get("uid");
+  const uid = new URLSearchParams(location.hash.split('?')[1]).get("uid");
   const [artist, setArtist] = useState<Artist | null>(null);
   const navigate = useNavigate(); 
   const [isEditMode, setIsEditMode] = useState(false); 
@@ -191,6 +192,7 @@ export const Ref: React.FC = () => {
         secondary={artist?.theme.secondary}
         highlight={artist?.theme.highlight}
       />
+
       <div className="container mx-auto flex justify-center items-center h-full">
         <div className={`shadow-md p-4 w-full my-16 ${artist?.theme.width} flex flex-col gap-4`}
           style={{ backgroundColor: artist?.theme.bg }}> 
@@ -205,13 +207,15 @@ export const Ref: React.FC = () => {
             {/* EDITOR MODE TOGGLE BUTTON */}
             {currentUser && currentUser.uid == uid &&
               <button onClick={() => { if (isEditMode) updateDb(); setShowOcDeleteBtn(false); setIsEditMode(!isEditMode)} }>
-                <div className="flex gap-2">
+                <div className="flex gap-2 underline">
                   {isEditMode ? 'Stop Editing' : 'Start Editing'}
                   {isEditMode ? <RiCheckboxLine size={24} /> : <RiImageEditFill size={24} /> }
                 </div>
               </button> 
             }
           </div>
+
+          <Cloner destinationUid={uid}/>
 
           {/* PLACEHOLDER FOR NONEXISTENT ARTIST */}
           {!artist && (
@@ -288,12 +292,12 @@ export const Ref: React.FC = () => {
                 <h4 className="text-lg text-teal-500 font-semibold mt-4">Theme Settings</h4>
                 <p className="text-xs text-teal-500 mb-4">*Theme changes are also local - you are setting a unique theme just for your page.</p>
 
-                <div className="flex">
+                <div className="w-full flex">
 
                   {/* WIDTH CHOOSER */}
-                  <div className="mr-4">
+                  <div className="w-full mr-4">
                     <p className="text-xs text-teal-500 mb-1">Width</p>
-                    <select className="border border-teal-500 mb-4" value={artist?.theme.width} style={{ backgroundColor: artist?.theme.surface }}
+                    <select className="border border-teal-500 mb-4 w-full" value={artist?.theme.width} style={{ backgroundColor: artist?.theme.surface }}
                       onChange={(e) => {setNewArtist({ ...artist, theme: {...artist.theme, width: e.target.value}})}}
                       onClick={() => updateDb()}>
                       <option value="max-w-screen-sm">Small</option>
@@ -304,9 +308,9 @@ export const Ref: React.FC = () => {
                   </div>
 
                   {/* FONT CHOOSER */}
-                  <div>
+                  <div className="w-full">
                     <p className="text-xs text-teal-500 mb-1">Font</p>
-                    <select className="border border-teal-500 mb-4" value={artist?.theme.font} style={{ backgroundColor: artist?.theme.surface }}
+                    <select className="border border-teal-500 mb-4 w-full" value={artist?.theme.font} style={{ backgroundColor: artist?.theme.surface }}
                       onChange={(e) => {setNewArtist({ ...artist, theme: {...artist.theme, font: e.target.value}})}}
                       onClick={() => updateDb()}>
                       <option value="sans-serif" style={{fontFamily:"sans-serif"}}>Sans Serif - DEFAULT</option>
