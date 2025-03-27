@@ -117,7 +117,7 @@ export const Menu: React.FC = () => {
               <hr style={{ borderColor: defaultColor.secondary}}/>
 
               {/* PROFILE LIST */}
-              <div className="h-[300px] overflow-y-auto mx-4 mt-4">
+              <div className="h-[400px] md:h-[900px] overflow-y-auto mx-4 mt-4">
                 <ul className="space-y-4">
                   {filteredProfiles
                     .sort((a, b) => a.name.localeCompare(b.name))
