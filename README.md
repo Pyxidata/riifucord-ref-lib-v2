@@ -1,4 +1,7 @@
-# riifucord-ref-lib-v2
+<h1>
+  riifucord-ref-lib-v2 [<a href="https://pyxidata.github.io/riifucord-ref-lib-v2/" target="_blank">link</a>]
+</h1>
+
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Pyxidata/riifucord-ref-lib-v2/refs/heads/main/src/assets/spin.gif" alt="Icon" title="icon">
@@ -13,7 +16,7 @@
 </p>
 
 <h1>
-  Completeness: 🟡🟡🟡⚪⚪
+  Completeness: 🟢🟢🟢🟢⚪
 </h1>
 
 <dl>
@@ -28,12 +31,14 @@
   Requirements
 </h1>
 
+<p>
   I have only tested it in Chrome browser.
+</p>
 
 <h1>
   Development
 </h1>
 
 <p>
-  <code>TypeScript</code> <code>Node.js</code> <code>React.js</code> <code>Vite</code> <code>Tailwind CSS</code> <code>Firebase</code>
+  <code>TypeScript</code> <code>React.js</code> <code>Tailwind CSS</code> <code>Firebase</code>
 </p>
